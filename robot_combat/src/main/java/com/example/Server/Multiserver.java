@@ -75,9 +75,9 @@ public class Multiserver {
         }
         System.out.println("Server shutdown");
     }
- private static void serverCommands(ServerSocket socket){
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        Thread task = new Thread(new Runnable() {
+        private static void serverCommands(ServerSocket socket){
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            Thread task = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -106,25 +106,25 @@ public class Multiserver {
         });
         task.start();
     }
-    private static void dumpCommand(){
+        private static void dumpCommand(){
         //show obstacles in world
-        world.showObstacles();
+            world.showObstacles();
         //show robots in world
-        getRobots(false);
-        display2DWorld();
+            getRobots(false);
+            display2DWorld();
     }
-    private static void display2DWorld(){
-        int width = world.getWidth();
-        int height = world.getHeight();
-        String[][] grid = new String[height][width];
+        private static void display2DWorld(){
+            int width = world.getWidth();
+            int height = world.getHeight();
+            String[][] grid = new String[height][width];
         
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                grid[i][j] = ".";
-            }
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    grid[i][j] = ".";
+                 }   
         }
-         List<Obstacle> obstacles = world.getObstacles();
-        for (Obstacle obstacle : obstacles) {
+        List<Obstacle> obstacles = world.getObstacles();
+            for (Obstacle obstacle : obstacles) {
             int size = obstacle.getSize();
             int startX = obstacle.getBottomLeftX() + width / 2;
             int startY = height / 2 - obstacle.getBottomLeftY();
@@ -145,7 +145,7 @@ public class Multiserver {
             }
         }
     }
-    List<Robot> robots = world.getRobots();
+        List<Robot> robots = world.getRobots();
         for (Robot robot : robots) {
             Position pos = robot.getPosition();
             int x = pos.getX() + width / 2;
@@ -174,5 +174,24 @@ public class Multiserver {
         }
         System.out.println(" +");
     
-}   
+}
+    private static void getRobots(boolean needState) {
+        if (!world.getRobots().isEmpty()) {
+        System.out.println("There are some robots.");
+        for (Robot robot : world.getRobots()) {
+            System.out.println("--> " + robot.getName().toUpperCase());
+            if (needState){
+                System.out.printf(
+                        "%nPosition: %s%nDirection: %s%nShields: %s%nShots: %s%nStatus: %s%n",
+                        robot.getPosition().toString(),
+                        robot.getCurrentDirection(),
+                        robot.getShields(),
+                        robot.getShots(),
+                        robot.getStatus()
+                );
+            }
+        }
+    }else System.out.println("There are no robots in the world.\n");
+    }
+
 }
