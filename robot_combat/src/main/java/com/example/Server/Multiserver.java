@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Multiserver {
     private static TextWorld world;
@@ -112,4 +113,66 @@ public class Multiserver {
         getRobots(false);
         display2DWorld();
     }
+    private static void display2DWorld(){
+        int width = world.getWidth();
+        int height = world.getHeight();
+        String[][] grid = new String[height][width];
+        
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                grid[i][j] = ".";
+            }
+        }
+         List<Obstacle> obstacles = world.getObstacles();
+        for (Obstacle obstacle : obstacles) {
+            int size = obstacle.getSize();
+            int startX = obstacle.getBottomLeftX() + width / 2;
+            int startY = height / 2 - obstacle.getBottomLeftY();
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                int x = startX + i;
+                int y = startY - j;
+                if (x >= 0 && x < width && y >= 0 && y < height) {
+                    if (obstacle.getType() == IWorld.ObstacleType.MOUNTAIN){
+                        grid[y][x] = AbstractWorld.COLOR_MOUNTAIN_TEXT + "▣" + AbstractWorld.RESET; // Use a single character for the square obstacle
+                    }else if (obstacle.getType() == IWorld.ObstacleType.PIT){
+                        grid[y][x] = AbstractWorld.COLOR_PIT_TEXT + "▦" + AbstractWorld.RESET; // Use a single character for the square obstacle
+                    }else if (obstacle.getType() == IWorld.ObstacleType.LAKE) {
+                        grid[y][x] = AbstractWorld.COLOR_LAKE_TEXT + "◙" + AbstractWorld.RESET; // Use a single character for the square obstacle
+                    }
+                }
+            }
+        }
+    }
+    List<Robot> robots = world.getRobots();
+        for (Robot robot : robots) {
+            Position pos = robot.getPosition();
+            int x = pos.getX() + width / 2;
+            int y = height / 2 - pos.getY();
+            if (x >= 0 && x < width && y >= 0 && y < height) {
+                grid[y][x] = AbstractWorld.COLOR_ROBOT + robot.getName().charAt(0) + AbstractWorld.RESET; // Mark robots with 'R'
+            }
+        }
+        System.out.print("+  ");
+        for (int j = 0; j < width; j++) {
+            System.out.print("--");
+        }
+        System.out.println(" +");
+
+        for (int i = 0; i < height; i++) {
+            System.out.print("|  ");
+            for (int j = 0; j < width; j++) {
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.println(" |");
+        }
+
+        System.out.print("+  ");
+        for (int j = 0; j < width; j++) {
+            System.out.print("--");
+        }
+        System.out.println(" +");
+    
+}   
 }
