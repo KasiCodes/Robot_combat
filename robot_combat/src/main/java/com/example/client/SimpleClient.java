@@ -45,6 +45,21 @@ public class SimpleClient {
                 String messageFromServer = in.readLine();
                 ObjectNode serverResponse = Protocol.interpretJSONtoObjectNode(messageFromServer);
 
+                switch(instruction[0]){
+                    case ("launch") -> {
+                        if (serverResponse.path("result").asText().equals("ERROR")) System.out.println(serverResponse.path("data").path("message").asText());
+                        else {
+                            GraphicsCommand.displayAirplaneGraphic();
+                            HelpCommand.handleClientCommands();
+                            robotName = instruction[2];
+                            robotLaunched = true;
+                            JsonNode data = serverResponse.path("data");
+                            System.out.println("Successfully launched "+robotName+ " into the world at position "+ data.path("position") +" with "+ serverResponse.path("state").path("shields") + " shields and " + serverResponse.path("state").path("shots") + " shots.");
+                            System.out.println("World has visibility of "+ data.path("visibility") + " steps, reload time of "+ data.path("reload")+ "s and repair time of "+ data.path("repair")+"s.");
+                        }
+                    }
+
+                }
             }
          
         }
