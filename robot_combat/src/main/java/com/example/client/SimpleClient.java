@@ -1,6 +1,7 @@
 package com.example.client;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -150,10 +151,39 @@ public class SimpleClient {
                             }
                         }
                     }
+                    case ("reload") -> {
+                        String message = serverResponse.path("data").path("message").asText();
+                        switch (message){
+                            case "RELOAD" -> System.out.println(robotName + " is currently reloading");
+                            case "REPAIR" -> System.out.println(robotName + " is currently repairing its shield");
+                            case "DEAD" -> System.out.println(robotName + " is dead");
+                            case "Could not parse arguments" -> System.out.println("could not parse arguments");
+                            default -> System.out.println(robotName+ " is reloading.");
+                        }
+                    }
+                    case ("repair") -> {
+                        String message = serverResponse.path("data").path("message").asText();
+                        switch (message){
+                            case "RELOAD" -> System.out.println(robotName + " is currently reloading");
+                            case "REPAIR" -> System.out.println(robotName + " is currently repairing its shield");
+                            case "DEAD" -> System.out.println(robotName + " is dead");
+                            case "Could not parse arguments" -> System.out.println("could not parse arguments");
+                            default -> System.out.println(robotName+ " is repairing.");
+                        }
+                    }
+                    case ("help") -> {
+                        HelpCommand.handleClientCommands();
+                    }
+                    default -> {
+                        if (serverResponse.path("result").asText().equals("ERROR")) System.out.println(serverResponse.path("data").path("message").asText());
+                    }
 
                 }
             }
          
+        }
+        catch (IOException e) {
+            System.out.println("Can't connect to server.\nPlease check that the server is running and that the IP address and port are correct.");
         }
 
     }
