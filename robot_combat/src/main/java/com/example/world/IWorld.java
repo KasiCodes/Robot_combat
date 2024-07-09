@@ -3,6 +3,7 @@ package com.example.world;
 import java.util.List;
 import java.util.Map;
 
+import com.example.robot.Position;
 import com.example.robot.Robot;
 import com.example.world.Obstacles.Obstacle;
 

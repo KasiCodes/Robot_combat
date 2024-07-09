@@ -1,5 +1,8 @@
 package com.example.world.Obstacles;
 
+import com.example.robot.Position;
+import com.example.world.IWorld;
+
 import javax.swing.text.Position;
 
 public class AbstractObstacles implements Obstacle {
