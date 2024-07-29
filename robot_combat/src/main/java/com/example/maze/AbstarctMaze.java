@@ -1,8 +1,10 @@
 package com.example.maze;
 
+import com.example.robot.Position;
 import java.util.List;
 
-import javax.swing.text.Position;
+
+import com.example.world.Obstacles.Obstacle;
 
 public class AbstarctMaze {
 

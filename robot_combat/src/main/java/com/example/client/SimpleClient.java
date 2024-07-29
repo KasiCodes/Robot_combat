@@ -1,11 +1,18 @@
 package com.example.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+
+import com.example.GraphicsCommand;
+import com.example.HelpCommand;
+import com.example.protocol.ClientProtocol;
+import com.example.protocol.Protocol;
 
 public class SimpleClient {
         static Scanner scanner;
